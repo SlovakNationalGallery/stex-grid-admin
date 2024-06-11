@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->json('title')->nullable();
             $table->json('perex')->nullable();
-            $table->json('content')->nullable();
+            $table->json('text')->nullable();
             $table->timestamps();
         });
     }

@@ -17,16 +17,17 @@ class SectionResource extends Resource
 {
     protected static ?string $model = Section::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-folder';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('title'),
-                Forms\Components\TextInput::make('perex'),
-                Forms\Components\TextInput::make('content'),
-            ]);
+                Forms\Components\MarkdownEditor::make('perex'),
+                Forms\Components\MarkdownEditor::make('text'),
+            ])
+            ->columns(1);
     }
 
     public static function table(Table $table): Table
