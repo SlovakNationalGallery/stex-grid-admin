@@ -18,7 +18,7 @@ use Filament\Resources\Concerns\Translatable;
 class SectionResource extends Resource
 {
     use Translatable;
-    
+
     protected static ?string $model = Section::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-folder';
@@ -38,6 +38,14 @@ class SectionResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('title')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('items_count')->counts('items'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -65,6 +73,13 @@ class SectionResource extends Resource
     {
         return [
             'index' => Pages\ManageSections::route('/'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\ItemsRelationManager::class,
         ];
     }
 }

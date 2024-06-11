@@ -22,7 +22,7 @@ return new class extends Migration
                 ->foreign('section_id')
                 ->references('id')
                 ->on('sections');
-            $table->integer('ord');
+            $table->integer('ord')->nullable();
         });
     }
 
