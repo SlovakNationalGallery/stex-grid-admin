@@ -29,9 +29,6 @@ class ItemResource extends JsonResource
             'dating' => $this->getDating(),
             'dating_short' => $this->getDatingShort(),
             'image_src' => $this->getImageRoute(),
-            'image_srcset' => collect([220, 300, 600, 800])
-                ->map(fn($width) => $this->getImageRoute($width) . " ${width}w")
-                ->join(', '),
             'images' => $this['webumenia_item']->images,
             'image_aspect_ratio' => $this['webumenia_item']->image_ratio,
         ];
