@@ -19,6 +19,10 @@ class ItemResource extends JsonResource
         return [
             'id' => $this['item']->id,
             'author' => $this->getAuthor(),
+            'x' => $this['item']->x,
+            'y' => $this['item']->y,
+            'span_x' => $this['item']->span_x,
+            'span_y' => $this['item']->span_y,
             'title' => $this['webumenia_item']->title,
             'medium' => $this['webumenia_item']->medium ?? null, // @TODO: medium is missing in the Webumenia API v2
             'measurement' => $this['webumenia_item']->measurement ?? null, // @TODO: measurement is missing in the Webumenia API v2 
