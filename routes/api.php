@@ -60,14 +60,19 @@ Route::get('/items', function () {
     return ['data' => Item::all()];
 });
 
+Route::get('/sections', function () {    
+    
+});
+
 
 Route::put('/items/{id}', function (string $id, Request $request) {
     $item = Item::find($id) ?: new Item();
     $item->fill($request->all());
     $item->save();
+    return $item;
 
-    return new ItemResource([
-        'item' => $item,
-        'webumenia_item' => [],
-    ]);
+    // return new ItemResource([
+    //     'item' => $item,
+    //     'webumenia_item' => [],
+    // ]);
 });
