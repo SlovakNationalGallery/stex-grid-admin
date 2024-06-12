@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'webumenia' => [
+        'url' => env('WEBUMENIA_URL', 'https://www.webumenia.sk'),
+        'api' => env('WEBUMENIA_API', 'https://www.webumenia.sk/api'),
+    ],
+
 ];
