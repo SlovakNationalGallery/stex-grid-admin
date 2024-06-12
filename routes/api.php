@@ -1,11 +1,14 @@
 <?php
 
 use App\Models\Item;
+use App\Models\Section;
 use Illuminate\Http\Request;
 use Illuminate\Http\Client\Pool;
 use App\Http\Resources\ItemResource;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
+use App\Http\Resources\SectionResource;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 Route::get('/user', function (Request $request) {
@@ -61,7 +64,24 @@ Route::get('/items', function () {
 });
 
 Route::get('/sections', function () {    
-    
+    $sections = Section::with('items')->get();
+    $resultSections = [];
+    foreach ($sections as $section) {
+        $responses = Http::pool(
+            fn (Pool $pool) => $section->items->map(
+                fn (Item $item) => $pool
+                    ->as($item->id)
+                    ->webumenia()
+                    ->get("/v2/items/{$item->id}")
+            )
+        );
+
+        $resultSections[] = [
+            'section' => $section,
+            'webumenia_items' => collect($responses)->map(fn (Response $response) => $response->object()->data),
+        ];
+    }
+    return SectionResource::collection($resultSections);
 });
 
 
