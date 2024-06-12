@@ -17,7 +17,7 @@ class ItemResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this['webumenia_item']->id,
+            'id' => $this['item']->id,
             'author' => $this->getAuthor(),
             'title' => $this['webumenia_item']->title,
             'medium' => $this['webumenia_item']->medium ?? null, // @TODO: medium is missing in the Webumenia API v2
