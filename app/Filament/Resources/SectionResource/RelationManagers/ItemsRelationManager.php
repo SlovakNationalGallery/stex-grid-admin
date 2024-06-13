@@ -18,9 +18,13 @@ class ItemsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('id')
-                    ->required()
-                    ->maxLength(255),
+                // Forms\Components\TextInput::make('id')
+                //     ->required()
+                //     ->maxLength(255),
+                Forms\Components\TextInput::make('x'),
+                Forms\Components\TextInput::make('y'),
+                Forms\Components\TextInput::make('span_x'),
+                Forms\Components\TextInput::make('span_y'),
             ]);
     }
 
@@ -30,14 +34,19 @@ class ItemsRelationManager extends RelationManager
             ->recordTitleAttribute('id')
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
+                Tables\Columns\TextColumn::make('x'),
+                Tables\Columns\TextColumn::make('y'),
+                Tables\Columns\TextColumn::make('span_x'),
+                Tables\Columns\TextColumn::make('span_y'),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                // Tables\Actions\CreateAction::make(),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
