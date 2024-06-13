@@ -26,6 +26,7 @@ class ItemResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('id')->visibleOn(['create'])->columnSpan(2)->required(),
                 Forms\Components\TextInput::make('x')
                     ->numeric(),
                 Forms\Components\TextInput::make('y')
@@ -34,7 +35,7 @@ class ItemResource extends Resource
                     ->numeric(),
                 Forms\Components\TextInput::make('span_y')
                     ->numeric(),
-            ]);
+            ])->columns(2);
     }
 
     public static function table(Table $table): Table

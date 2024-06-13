@@ -18,7 +18,7 @@ class Item extends Model
 
     public $translatable = [];
 
-    protected $fillable = ['x', 'y', 'span_x', 'span_y'];
+    protected $fillable = ['id', 'x', 'y', 'span_x', 'span_y'];
 
     public function sections()
     {
