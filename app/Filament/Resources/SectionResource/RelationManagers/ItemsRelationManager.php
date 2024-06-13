@@ -3,12 +3,13 @@
 namespace App\Filament\Resources\SectionResource\RelationManagers;
 
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\AttachAction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Resources\RelationManagers\RelationManager;
 
 class ItemsRelationManager extends RelationManager
 {
@@ -25,6 +26,7 @@ class ItemsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('y'),
                 Forms\Components\TextInput::make('span_x'),
                 Forms\Components\TextInput::make('span_y'),
+                Forms\Components\TextInput::make('ord')->label('Order')
             ]);
     }
 
@@ -36,23 +38,28 @@ class ItemsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\TextColumn::make('x'),
                 Tables\Columns\TextColumn::make('y'),
-                Tables\Columns\TextColumn::make('span_x'),
-                Tables\Columns\TextColumn::make('span_y'),
+                Tables\Columns\TextColumn::make('span_x')->label('Span X'),
+                Tables\Columns\TextColumn::make('span_y')->label('Span Y'),
+                Tables\Columns\TextColumn::make('ord')->label('Order'),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
+                Tables\Actions\AttachAction::make()->multiple()->form(fn (AttachAction $action): array => [
+                    $action->getRecordSelect(),
+                    Forms\Components\TextInput::make('ord')->label('Order'),
+                ]),
                 // Tables\Actions\CreateAction::make(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DetachAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DetachBulkAction::make(),
                 ]),
             ]);
     }

@@ -15,6 +15,6 @@ class Section extends Model
 
     public function items()
     {
-        return $this->belongsToMany(Item::class)->orderByPivot('ord');
+        return $this->belongsToMany(Item::class)->orderByPivot('ord')->withPivot('ord');
     }
 }
