@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Resources\Concerns\Translatable;
 
-
 class SectionResource extends Resource
 {
     use Translatable;
@@ -60,7 +59,6 @@ class SectionResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -69,17 +67,19 @@ class SectionResource extends Resource
             ]);
     }
 
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ManageSections::route('/'),
-        ];
-    }
-
     public static function getRelations(): array
     {
         return [
-            RelationManagers\ItemsRelationManager::class,
+            'items' => RelationManagers\ItemsRelationManager::class,
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListSections::route('/'),
+            'create' => Pages\CreateSection::route('/create'),
+            'edit' => Pages\EditSection::route('/{record}/edit'),
         ];
     }
 }

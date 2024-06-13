@@ -4,20 +4,17 @@ namespace App\Filament\Resources\SectionResource\Pages;
 
 use App\Filament\Resources\SectionResource;
 use Filament\Actions;
-use Filament\Resources\Pages\ManageRecords;
+use Filament\Resources\Pages\CreateRecord;
 
-class ManageSections extends ManageRecords
+class CreateSection extends CreateRecord
 {
-    use ManageRecords\Concerns\Translatable;
-
+    use CreateRecord\Concerns\Translatable;
     protected static string $resource = SectionResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\LocaleSwitcher::make(),
-            Actions\CreateAction::make(),
         ];
     }
-
 }
