@@ -7,6 +7,7 @@ use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Navigation\NavigationItem;
 use Filament\Http\Middleware\Authenticate;
 use Filament\SpatieLaravelTranslatablePlugin;
 use Illuminate\Session\Middleware\StartSession;
@@ -58,6 +59,12 @@ class AdminPanelProvider extends PanelProvider
             ->plugin(
                 SpatieLaravelTranslatablePlugin::make()
                     ->defaultLocales(['sk', 'en']),
-            );
+            )
+            ->navigationItems([
+                NavigationItem::make('Grid editor')
+                    ->url('http://stex.sng.sk/grid/editor/', shouldOpenInNewTab: true)
+                    ->icon('heroicon-o-cube-transparent')
+                    ->sort(3)
+            ]);
     }
 }
