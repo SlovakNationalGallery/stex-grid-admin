@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use App\Models\Authority;
 use App\Models\Bucketlist;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ItemResource extends JsonResource
@@ -24,8 +25,8 @@ class ItemResource extends JsonResource
             'span_x' => $this['item']->span_x,
             'span_y' => $this['item']->span_y,
             'title' => $this['webumenia_item']->title,
-            'medium' => $this['webumenia_item']->medium ?? null, // @TODO: medium is missing in the Webumenia API v2
-            'measurement' => $this['webumenia_item']->measurement ?? null, // @TODO: measurement is missing in the Webumenia API v2 
+            'medium' => $this['webumenia_item']->medium,
+            'measurement' => Arr::first($this['webumenia_item']->measurements),
             'dating' => $this->getDating(),
             'dating_short' => $this->getDatingShort(),
             'image_src' => $this->getImageRoute(),

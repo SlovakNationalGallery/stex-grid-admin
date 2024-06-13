@@ -65,20 +65,16 @@ Route::get('/items', function () {
 
 Route::get('/sections', function () {    
     $sections = Section::with('items')->get();
-    $resultSections = [];
+
     foreach ($sections as $section) {
-        $responses = Http::pool(
-            fn (Pool $pool) => $section->items->map(
-                fn (Item $item) => $pool
-                    ->as($item->id)
-                    ->webumenia()
-                    ->get("/v2/items/{$item->id}")
-            )
-        );
+        $response = Http::webumenia()->get("/v2/items/", [
+            'ids' => $section->items->pluck('id')->toArray(),
+            'size' => 100,
+        ]);
 
         $resultSections[] = [
             'section' => $section,
-            'webumenia_items' => collect($responses)->map(fn (Response $response) => $response->object()->data),
+            'webumenia_items' => collect($response->object()->data)->keyBy('id'),
         ];
     }
     return SectionResource::collection($resultSections);
