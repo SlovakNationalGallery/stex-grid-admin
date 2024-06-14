@@ -53,6 +53,7 @@ class ItemsRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make(),
             ])
             ->actions([
+                Tables\Actions\Action::make('API')->label('API')->icon('heroicon-o-code-bracket')->url(fn ($record) => route('api.items.show', $record->id))->openUrlInNewTab()->color('secondary'),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DetachAction::make(),

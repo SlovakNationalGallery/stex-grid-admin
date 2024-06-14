@@ -28,7 +28,7 @@ Route::get('/items/{id}', function (string $id) {
         'item' => $item,
         'webumenia_item' => $data,
     ]);
-});
+})->name('api.items.show');
 
 // Route::get('/items', function () {
 //     $items = Item::all()->take(30);
