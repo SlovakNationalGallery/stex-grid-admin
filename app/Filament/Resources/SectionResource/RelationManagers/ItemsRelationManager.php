@@ -46,7 +46,7 @@ class ItemsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\AttachAction::make()->form(fn (AttachAction $action): array => [
+                Tables\Actions\AttachAction::make()->preloadRecordSelect()->form(fn (AttachAction $action): array => [
                     $action->getRecordSelect(),
                     Forms\Components\TextInput::make('ord')->label('Order'),
                 ]),
