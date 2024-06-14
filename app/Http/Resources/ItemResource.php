@@ -32,6 +32,7 @@ class ItemResource extends JsonResource
             'image_src' => $this->getImageRoute(),
             'images' => $this['webumenia_item']->images,
             'image_aspect_ratio' => $this['webumenia_item']->image_ratio,
+            'ord' => $this->when(isSet($this['item']->pivot->ord), $this['item']->pivot->ord ?? null),
         ];
     }
 

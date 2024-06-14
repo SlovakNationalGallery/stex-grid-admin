@@ -26,11 +26,13 @@ class SectionResource extends JsonResource
 
     protected function items()
     {
-        return $this['section']->items->map(
-            fn(Item $item) => [
-                'item' => $item,
-                'webumenia_item' => $this['webumenia_items'][$item->id],
-            ]
-        );
+        return $this['section']->items->filter(
+            fn (Item $item) => !empty($this['webumenia_items'][$item->id])
+        )->map(
+                fn (Item $item) => [
+                    'item' => $item,
+                    'webumenia_item' => $this['webumenia_items'][$item->id] ?? null,
+                ]
+            );
     }
 }
