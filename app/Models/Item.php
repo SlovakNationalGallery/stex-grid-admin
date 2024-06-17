@@ -16,9 +16,25 @@ class Item extends Model
 
     protected $keyType = 'string';
 
-    public $translatable = [];
+    public $translatable = [
+        'title',
+        'author',
+        'dating',
+        'medium',
+        'measurement'
+    ];
 
-    protected $fillable = ['id', 'x', 'y', 'span_x', 'span_y'];
+    protected $fillable = ['id',
+        'x',
+        'y',
+        'span_x',
+        'span_y',
+        'title',
+        'author',
+        'dating',
+        'medium',
+        'measurement'
+    ];
 
     public function sections()
     {
