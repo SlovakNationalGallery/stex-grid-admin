@@ -4,19 +4,17 @@ namespace App\Filament\Resources\ItemResource\Pages;
 
 use App\Filament\Resources\ItemResource;
 use Filament\Actions;
-use Filament\Resources\Pages\ManageRecords;
+use Filament\Resources\Pages\CreateRecord;
 
-class ManageItems extends ManageRecords
+class CreateItem extends CreateRecord
 {
-    use ManageRecords\Concerns\Translatable;
-
+    use CreateRecord\Concerns\Translatable;
     protected static string $resource = ItemResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\LocaleSwitcher::make(),
-            Actions\CreateAction::make(),
         ];
     }
 }

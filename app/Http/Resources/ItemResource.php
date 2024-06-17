@@ -24,15 +24,15 @@ class ItemResource extends JsonResource
             'y' => $this['item']->y,
             'span_x' => $this['item']->span_x,
             'span_y' => $this['item']->span_y,
-            'title' => $this['webumenia_item']->title,
-            'medium' => $this['webumenia_item']->medium,
-            'measurement' => Arr::first($this['webumenia_item']->measurements),
-            'dating' => $this->getDating(),
+            'title' => $this['item']->title ?? $this['webumenia_item']->title,
+            'medium' => $this['item']->medium ?? $this['webumenia_item']->medium,
+            'measurement' => $this['item']->measurement ?? Arr::first($this['webumenia_item']->measurements),
+            'dating' => $this['item']->dating ?? $this->getDating(),
             'dating_short' => $this->getDatingShort(),
             'image_src' => $this->getImageRoute(),
             'images' => $this['webumenia_item']->images,
             'image_aspect_ratio' => $this['webumenia_item']->image_ratio,
-            'ord' => $this->when(isSet($this['item']->pivot->ord), $this['item']->pivot->ord ?? null),
+            'ord' => $this->when(isset($this['item']->pivot->ord), $this['item']->pivot->ord ?? null),
         ];
     }
 
@@ -72,14 +72,14 @@ class ItemResource extends JsonResource
     {
         $localAuthoritiesNames = explode(', ', $this['item']->author_name);
         $webumeniaAuthorities = collect($this['webumenia_item']->authorities);
-        $webumeniaAuthoritiesNames = $webumeniaAuthorities->map(fn(object $authority) => $this->formatName($authority->name));
+        $webumeniaAuthoritiesNames = $webumeniaAuthorities->map(fn (object $authority) => $this->formatName($authority->name));
 
         $filteredLocalAuthoritiesNames = collect($localAuthoritiesNames)->reject(
-            fn($name) => $webumeniaAuthoritiesNames->contains($this->formatName($name))
+            fn ($name) => $webumeniaAuthoritiesNames->contains($this->formatName($name))
         )->filter();
 
         $webumeniaAuthoritiesRoles = $webumeniaAuthorities->map(
-            fn(object $authority) => $this->formatName($authority->name) .
+            fn (object $authority) => $this->formatName($authority->name) .
                 (!empty($authority->role) && !in_array($authority->role, ['autor', 'author'])
                     ? ' - ' . $authority->role
                     : '')
@@ -91,5 +91,5 @@ class ItemResource extends JsonResource
     private function formatName($name)
     {
         return preg_replace('/^([^,]*),\s*(.*)$/', '$2 $1', $name);
-    }    
+    }
 }

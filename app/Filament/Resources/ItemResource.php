@@ -17,7 +17,6 @@ use Filament\Resources\Concerns\Translatable;
 class ItemResource extends Resource
 {
     use Translatable;
-
     protected static ?string $model = Item::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-photo';
@@ -26,7 +25,6 @@ class ItemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('id')->visibleOn(['create'])->columnSpan(2)->required(),
                 Forms\Components\TextInput::make('x')
                     ->numeric(),
                 Forms\Components\TextInput::make('y')
@@ -35,7 +33,12 @@ class ItemResource extends Resource
                     ->numeric(),
                 Forms\Components\TextInput::make('span_y')
                     ->numeric(),
-            ])->columns(2);
+                Forms\Components\TextInput::make('title'),
+                Forms\Components\TextInput::make('author'),
+                Forms\Components\TextInput::make('dating'),
+                Forms\Components\TextInput::make('medium'),
+                Forms\Components\TextInput::make('measurement'),
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -81,10 +84,19 @@ class ItemResource extends Resource
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageItems::route('/'),
+            'index' => Pages\ListItems::route('/'),
+            'create' => Pages\CreateItem::route('/create'),
+            'edit' => Pages\EditItem::route('/{record}/edit'),
         ];
     }
 }
