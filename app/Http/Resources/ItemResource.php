@@ -70,13 +70,11 @@ class ItemResource extends JsonResource
 
     private function getAuthor()
     {
-        $localAuthoritiesNames = explode(', ', $this['item']->author_name);
+        if (!empty($this['item']->author)) {
+            return $this['item']->author;
+        }
         $webumeniaAuthorities = collect($this['webumenia_item']->authorities);
         $webumeniaAuthoritiesNames = $webumeniaAuthorities->map(fn (object $authority) => $this->formatName($authority->name));
-
-        $filteredLocalAuthoritiesNames = collect($localAuthoritiesNames)->reject(
-            fn ($name) => $webumeniaAuthoritiesNames->contains($this->formatName($name))
-        )->filter();
 
         $webumeniaAuthoritiesRoles = $webumeniaAuthorities->map(
             fn (object $authority) => $this->formatName($authority->name) .
@@ -85,7 +83,7 @@ class ItemResource extends JsonResource
                     : '')
         );
 
-        return $webumeniaAuthoritiesRoles->concat($filteredLocalAuthoritiesNames)->join(', ');
+        return $webumeniaAuthoritiesRoles->join(', ');
     }
 
     private function formatName($name)
