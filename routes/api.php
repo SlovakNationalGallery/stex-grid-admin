@@ -64,12 +64,12 @@ Route::get('/items', function () {
 });
 
 Route::get('/sections', function () {
-    $sections = Section::with('items')->get();
+    $sections = Section::with('items_with_position')->get();
 
     foreach ($sections as $section) {
 
         $webumenia_items = collect();
-        if (!$section->items->isEmpty()) {
+        if (!$section->items_with_position->isEmpty()) {
             $response = Http::webumenia()->get("/v2/items/", [
                 'ids' => $section->items->pluck('id')->toArray(),
                 'size' => 100,
@@ -87,7 +87,7 @@ Route::get('/sections', function () {
         ];
     }
     return SectionResource::collection($resultSections);
-})->middleware('cacheResponse:600'); // cache for 10 minutes
+}); //->middleware('cacheResponse:600'); // cache for 10 minutes
 
 
 Route::put('/items/{id}', function (string $id, Request $request) {

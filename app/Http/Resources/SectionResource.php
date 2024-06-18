@@ -26,7 +26,7 @@ class SectionResource extends JsonResource
 
     protected function items()
     {
-        return $this['section']->items->filter(
+        return $this['section']->items_with_position->filter(
             fn (Item $item) => !empty($this['webumenia_items'][$item->id])
         )->map(
                 fn (Item $item) => [
