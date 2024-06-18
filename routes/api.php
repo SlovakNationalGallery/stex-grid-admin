@@ -63,18 +63,27 @@ Route::get('/items', function () {
     return ['data' => Item::all()];
 });
 
-Route::get('/sections', function () {    
+Route::get('/sections', function () {
     $sections = Section::with('items')->get();
 
     foreach ($sections as $section) {
-        $response = Http::webumenia()->get("/v2/items/", [
-            'ids' => $section->items->pluck('id')->toArray(),
-            'size' => 100,
-        ]);
+
+        $webumenia_items = collect();
+        if (!$section->items->isEmpty()) {
+            $response = Http::webumenia()->get("/v2/items/", [
+                'ids' => $section->items->pluck('id')->toArray(),
+                'size' => 100,
+            ]);
+            try {
+                $webumenia_items = collect($response->object()->data)->keyBy('id');
+            } catch (\Exception $e) {
+                continue;
+            }
+        }
 
         $resultSections[] = [
             'section' => $section,
-            'webumenia_items' => collect($response->object()->data)->keyBy('id'),
+            'webumenia_items' => $webumenia_items,
         ];
     }
     return SectionResource::collection($resultSections);
