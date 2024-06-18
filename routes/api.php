@@ -87,7 +87,7 @@ Route::get('/sections', function () {
         ];
     }
     return SectionResource::collection($resultSections);
-});
+})->middleware('cacheResponse:600'); // cache for 10 minutes
 
 
 Route::put('/items/{id}', function (string $id, Request $request) {
