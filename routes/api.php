@@ -65,29 +65,32 @@ Route::get('/items', function () {
 
 Route::get('/sections', function () {
     $sections = Section::with('items_with_position')->get();
+    $allItemIds = $sections->pluck('items_with_position.*.id')->flatten()->unique()->toArray();
 
-    foreach ($sections as $section) {
-
-        $webumenia_items = collect();
-        if (!$section->items_with_position->isEmpty()) {
-            $response = Http::webumenia()->get("/v2/items/", [
-                'ids' => $section->items->pluck('id')->toArray(),
-                'size' => 100,
-            ]);
-            try {
-                $webumenia_items = collect($response->object()->data)->keyBy('id');
-            } catch (\Exception $e) {
-                continue;
-            }
+    $webumeniaItems = collect();
+    if (!empty($allItemIds)) {
+        $response = Http::webumenia()->get("/v2/items/", [
+            'ids' => $allItemIds,
+            'size' => 100,
+        ]);
+        try {
+            $webumeniaItems = collect($response->object()->data)->keyBy('id');
+        } catch (\Exception $e) {
         }
-
-        $resultSections[] = [
-            'section' => $section,
-            'webumenia_items' => $webumenia_items,
-        ];
     }
+
+    $resultSections = $sections->map(function ($section) use ($webumeniaItems) {
+        $sectionWebumeniaItems = $section->items_with_position->mapWithKeys(function ($item) use ($webumeniaItems) {
+            return [$item->id => $webumeniaItems->get($item->id)];
+        });
+        return [
+            'section' => $section,
+            'webumenia_items' => $sectionWebumeniaItems,
+        ];
+    });
+
     return SectionResource::collection($resultSections);
-}); //->middleware('cacheResponse:600'); // cache for 10 minutes
+}); //->middleware('cacheResponse:6000'); // cache for 10 minutes
 
 
 Route::put('/items/{id}', function (string $id, Request $request) {
