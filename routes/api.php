@@ -71,7 +71,7 @@ Route::get('/sections', function () {
     if (!empty($allItemIds)) {
         $response = Http::webumenia()->get("/v2/items/", [
             'ids' => $allItemIds,
-            'size' => 100,
+            'size' => 200,
         ]);
         try {
             $webumeniaItems = collect($response->object()->data)->keyBy('id');
